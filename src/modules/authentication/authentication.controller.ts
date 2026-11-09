@@ -2,6 +2,7 @@ import { NextFunction, Router, type Request, type Response } from "express";
 const router = Router({ strict: true, caseSensitive: true });
 import authenticationService from "./authentication.service";
 import {
+  authenticationMiddleware as authentication,
   responseFormatter,
   validationMiddleware as validation,
 } from "../../middleware";
@@ -9,6 +10,7 @@ import { IResponse, issuer, IUser } from "../../common";
 import {
   confirmEmailSchema,
   loginSchema,
+  logoutSchema,
   resendConfirmEmailSchema,
   signupSchema,
 } from "../../schemas";
@@ -28,10 +30,7 @@ router.post(
         data: { access_token, refresh_token },
         message,
         status,
-      } = await authenticationService.signupWithGmail(
-        req.body,
-        issuer(req),
-      );
+      } = await authenticationService.signupWithGmail(req.body, issuer(req));
       return {
         message,
         status,
@@ -57,7 +56,7 @@ router.post(
       return {
         status: 201,
         data,
-        message: "User created successfully",
+        message: "Signup Successful, Please Confirm Your Email to Continue",
       };
     },
   ),
@@ -160,5 +159,17 @@ router.post(
   }),
 );
 
+// Logout
+router.post(
+  "/logout",
+  authentication(),
+  validation(logoutSchema),
+  responseFormatter(async (req: Request, res: Response) => {
+    const message = await authenticationService.logout(req.payload!, {
+      ...req.validated!.body,
+    });
+    return message;
+  }),
+);
 
 export default router;

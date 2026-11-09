@@ -12,6 +12,7 @@ const repository_1 = require("../repository");
 const utils_1 = require("../utils");
 const cache_service_1 = require("./cache.service");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const security_1 = require("../security");
 class TokenService {
     userRepository;
     cacheService;
@@ -147,29 +148,31 @@ class TokenService {
             refresh_token,
         };
     }
-    async createRevokeToken({ payload }) {
+    async createRevokeToken({ payload, }) {
         const consumedTime = Date.now() / 1000 - payload.iat;
         const refreshExpiresIn = payload.iat + config_1.REFRESH_TOKEN_EXPIRES_IN;
         const ttl = refreshExpiresIn - consumedTime;
-        await set({
-            key: userRevokeTokenKeyFormat({
+        await this.cacheService.set({
+            key: (0, utils_1.userRevokeTokenKeyFormat)({
                 userId: payload.sub,
                 jti: payload.jti,
             }),
             value: payload.jti,
-            options: { EX: ttl },
+            ttl,
         });
         return;
     }
-    async basicAuth({ email, password }) {
-        const user = await findOne({
-            model: UserModel,
+    async basicAuth({ email, password, }) {
+        const user = await this.userRepository.findOne({
             filter: { email },
         });
-        const match = await compare(password, user.password);
-        if (!match)
-            NotFoundException({ message: "Invalid Login Credentials" });
-        return user;
+        if (user) {
+            const match = await (0, security_1.compare)(password, user.password);
+            if (match) {
+                return user;
+            }
+        }
+        throw new exception_1.NotFoundException("Invalid Login Credentials");
     }
 }
 exports.TokenService = TokenService;

@@ -132,37 +132,27 @@ export class AuthenticationService {
   }
 
   // -------------- SignUp -------------
-  async signup({
-    username,
-    email,
-    password,
-    confirmPassword,
-    phone,
-    gender,
-  }: SignUpDTO["body"]): Promise<IUser> {
-    const existsUser: HUser = (await this.userRepository.findOne({
-      filter: { email },
-      projection: { email: 1 },
-      options: { lean: true },
-    })) as HUser;
-
-    if (existsUser) {
-      existsUser._id;
-      throw new ConflictException("Email already exists.");
-    }
-
-    const user: HUser = await this.userRepository.create({
+  async signup(inputs: SignUpDTO["body"]) {
+    const checkDuplicate = await this.userRepository.findOne({
+      filter: { email: inputs.email },
+    });
+    if (checkDuplicate) throw new ConflictException("Email Already Exists");
+    const user = await this.userRepository.createOne({
       data: {
-        username,
-        email,
-        password: await hash(password),
-        confirmPassword: await hash(confirmPassword),
-        phone: await encryption(phone),
-        gender,
+        ...inputs,
+        password: await hash(inputs.password),
+        confirmPassword: await hash(inputs.confirmPassword),
+        phone: await encryption(inputs.phone),
       },
+
+      options: { validateBeforeSave: true },
     });
 
-    return user.toJSON();
+    await this.sendEmailOTP({
+      email: inputs.email,
+      subject: EmailSubjectEnum.CONFIRM_EMAIL,
+    });
+    return user;
   }
 
   // ----------- Login Helper -----------
@@ -226,7 +216,7 @@ export class AuthenticationService {
 
     // Login with System But Email Not Confirmed
     if (!user.confirmEmail)
-      throw new NotFoundException("Please Confirm Email First to Login");
+      throw new NotFoundException("Please Confirm Email First to Continue");
 
     // Check Password
     const match = await compare(password, user.password);
@@ -338,7 +328,7 @@ export class AuthenticationService {
     });
     if (existOTP_TTL > 0)
       throw new ConflictException(
-        "OTP Already Sent, Please check your email as we can't resend OTP after ${existOTP_TTL} seconds",
+        `OTP Already Sent, Please check your email as we can't resend OTP after ${existOTP_TTL} seconds`,
       );
 
     // Handle number of trials by checking it

@@ -10,6 +10,7 @@ const resetPasswordSchema = (lang) => {
         body: schema.shape.body.safeExtend({
             newPassword: validation_1.generalValidationFields.password(lang),
             confirmPassword: validation_1.generalValidationFields.password(lang),
+            otp: validation_1.generalValidationFields.otp(lang),
         }),
         headers: validation_1.generalValidationFields.header(lang),
     })

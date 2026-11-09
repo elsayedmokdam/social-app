@@ -18,7 +18,7 @@ class TokenService {
     cacheService;
     constructor() {
         this.userRepository = new repository_1.UserRepository();
-        this.cacheService = new cache_service_1.CacheService();
+        this.cacheService = cache_service_1.cacheService;
     }
     async generateToken({ payload = {}, secret = config_1.ACCESS_USER_TOKEN_SIGNATURE, options = {}, }) {
         return jsonwebtoken_1.default.sign(payload, secret, options);

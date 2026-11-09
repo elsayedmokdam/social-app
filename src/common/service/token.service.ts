@@ -20,7 +20,7 @@ import {
   userCacheProfileKeyFormat,
   userRevokeTokenKeyFormat,
 } from "../utils";
-import { CacheService } from "./cache.service";
+import { cacheService, CacheService } from "./cache.service";
 import jwt, { JwtPayload, Secret, SignOptions } from "jsonwebtoken";
 import { HUser } from "../../DB/models";
 import { compare } from "../security";
@@ -31,7 +31,7 @@ export class TokenService {
 
   constructor() {
     this.userRepository = new UserRepository();
-    this.cacheService = new CacheService();
+    this.cacheService =cacheService;
   }
 
   async generateToken({

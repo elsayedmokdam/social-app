@@ -17,7 +17,7 @@ class AuthenticationService {
     client;
     constructor() {
         this.userRepository = new repository_1.UserRepository();
-        this.caheService = new service_1.CacheService();
+        this.caheService = service_1.cacheService;
         this.tokenService = new service_1.TokenService();
         this.client = new google_auth_library_1.OAuth2Client();
     }

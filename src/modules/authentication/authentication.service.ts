@@ -10,7 +10,6 @@ import {
   BadRequestException,
   ConflictException,
   EmailSubjectEnum,
-  IUser,
   LogoutEnum,
   maxLoginAttempsKeyFormat,
   NotFoundException,
@@ -23,7 +22,7 @@ import {
 } from "../../common";
 import { HUser } from "../../DB/models";
 import { UserRepository } from "../../common/repository";
-import { CacheService, TokenService } from "../../common/service";
+import { cacheService, CacheService, TokenService } from "../../common/service";
 import {
   userCacheOTPKeyFormat,
   userCacheOTPTrialsKeyFormat,
@@ -56,7 +55,7 @@ export class AuthenticationService {
 
   constructor() {
     this.userRepository = new UserRepository();
-    this.caheService = new CacheService();
+    this.caheService = cacheService;
     this.tokenService = new TokenService();
     this.client = new OAuth2Client();
   }

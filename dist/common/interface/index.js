@@ -16,4 +16,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./eror.interface"), exports);
 __exportStar(require("./response.interface"), exports);
-__exportStar(require("./auth.interface"), exports);
+__exportStar(require("./user.interface"), exports);
+__exportStar(require("./repository.interface"), exports);

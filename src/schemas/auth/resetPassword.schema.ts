@@ -9,6 +9,7 @@ export const resetPasswordSchema = (lang: LanguageEnum) => {
       body: schema.shape.body.safeExtend({
         newPassword: generalValidationFields.password(lang as LanguageEnum),
         confirmPassword: generalValidationFields.password(lang as LanguageEnum),
+        otp: generalValidationFields.otp(lang as LanguageEnum),
       }),
       headers: generalValidationFields.header(lang as LanguageEnum),
     })

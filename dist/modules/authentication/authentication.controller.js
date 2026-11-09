@@ -14,7 +14,17 @@ router.post("/signup", (0, middleware_1.validationMiddleware)(schemas_1.signupSc
         status: 201,
         data,
         message: "User created successfully",
-        extra: "Extra",
+    };
+}));
+router.post("/resend-confirm-email-otp", (0, middleware_1.validationMiddleware)(schemas_1.resendConfirmEmailSchema), (0, middleware_1.responseFormatter)(async (req, res) => {
+    const message = await authentication_service_1.default.resendConfirmEmailOTP(req.validated.body);
+    return { message };
+}));
+router.patch("/confirm-email", (0, middleware_1.validationMiddleware)(schemas_1.confirmEmailSchema), (0, middleware_1.responseFormatter)(async (req, res) => {
+    const data = await authentication_service_1.default.confirmEmail(req.validated.body);
+    return {
+        data,
+        message: "Email Confirmed Successfully, Login to Continue",
     };
 }));
 exports.default = router;

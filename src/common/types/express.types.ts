@@ -1,3 +1,5 @@
+import { HUser } from "../../DB/models";
+import { JwtPayloadType } from "./jwt.types";
 
 export type ValidatedRequestData = {
   body?: any;
@@ -11,5 +13,7 @@ export type ValidatedRequestData = {
 declare module "express-serve-static-core" {
   interface Request {
     validated?: ValidatedRequestData;
+    user?:HUser;
+    payload?: JwtPayloadType;
   }
 }

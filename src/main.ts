@@ -1,10 +1,20 @@
+// DNS Problem
+import dns from "node:dns";
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+// ------------------------------------------
 import express from "express";
+import cors from "cors";
 import { authenticationController } from "./modules";
 import { globalErrorHandler } from "./middleware";
+import { PORT } from "./config";
+import { initializeDB } from "./DB/connection.db";
 const app: express.Application = express();
 
+// Database Connection
+initializeDB(app, PORT);
+
 // Application Level Middleware
-app.use(express.json())
+app.use(cors(), express.json());
 
 //------------- Application Routes -------------
 // Test Route
@@ -21,8 +31,4 @@ app.all("{/*dummy}", (req, res) => {
 });
 
 // Global Error Handler
-app.use(globalErrorHandler)
-
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
-});
+app.use(globalErrorHandler);

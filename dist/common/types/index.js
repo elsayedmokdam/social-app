@@ -18,3 +18,4 @@ __exportStar(require("./schema.types"), exports);
 __exportStar(require("./express.types"), exports);
 __exportStar(require("./mongoose.types"), exports);
 __exportStar(require("./jwt.types"), exports);
+__exportStar(require("./multer.types"), exports);

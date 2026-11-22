@@ -1,18 +1,28 @@
-import { ConflictException } from "../../common";
-import { TokenService } from "../../common/service";
-import { JwtPayloadType } from "../../common/types";
+import { HydratedDocument, UpdateWriteOpResult } from "mongoose";
+import { ConflictException, IUser } from "../../common";
+import { UserRepository } from "../../common/repository";
+import {
+  cloudService,
+  CloudService,
+  tokenService,
+  TokenService,
+} from "../../common/service";
+import { IFile, JwtPayloadType } from "../../common/types";
 import { ACCESS_TOKEN_EXPIRES_IN } from "../../config";
 import { HUser } from "../../DB/models";
 import { IRotateTokenResponse } from "./user.response";
 
 export class UserService {
-  private tokenService: TokenService;
+  private readonly tokenService: TokenService;
+  private readonly userRepository: UserRepository;
+  private readonly cloudService: CloudService;
   constructor() {
-    this.tokenService = new TokenService();
+    this.tokenService = tokenService;
+    this.userRepository = new UserRepository();
+    this.cloudService = cloudService;
   }
 
   // -------------- Rotate Token -------------
-
   async rotateToken(
     payload: JwtPayloadType,
     user: HUser,
@@ -42,6 +52,36 @@ export class UserService {
       refresh_token,
       user,
     };
+  }
+
+  // --------- Upload Profile Image ----------
+  async uploadProfileImage({
+    user,
+    file,
+  }: {
+    user: HUser;
+    file: IFile;
+  }): Promise<HydratedDocument<IUser> | null> {
+    return await this.userRepository.findByIdAndUpdate({
+      id: user._id,
+      update: { image: file.key },
+      options: { projection: { password: 0, confirmPassword: 0 } },
+    });
+  }
+
+  // --------- Upload Cover Images ----------
+  async uploadCoverImages({
+    user,
+    files,
+  }: {
+    user: HUser;
+    files: IFile[];
+  }): Promise<HydratedDocument<IUser> | null> {
+    return await this.userRepository.findByIdAndUpdate({
+      id: user._id,
+      update: { imageCover: files.map((file) => file.key) },
+      options: { projection: { password: 0, confirmPassword: 0 } },
+    });
   }
 }
 

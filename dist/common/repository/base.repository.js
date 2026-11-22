@@ -75,7 +75,7 @@ class DBRepository {
         });
     }
     async findByIdAndUpdate({ id, update, options, }) {
-        return await this.model.findOneAndUpdate(id, update, {
+        return await this.model.findByIdAndUpdate(id, update, {
             returnDocument: "after",
             ...options,
         });

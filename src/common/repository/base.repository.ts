@@ -285,7 +285,7 @@ export abstract class DBRepository<TRawDocType> {
     update?: UpdateQuery<TRawDocType>;
     options?: QueryOptions<TRawDocType> | null;
   }): Promise<HydratedDocument<TRawDocType> | null> {
-    return await this.model.findOneAndUpdate(id, update, {
+    return await this.model.findByIdAndUpdate(id, update, {
       returnDocument: "after",
       ...options,
     });

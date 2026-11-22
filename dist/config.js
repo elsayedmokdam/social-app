@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CORS_ORIGINS = exports.LOGIN_ATTEMPT_BLOCK_TIME = exports.MAX_LOGIN_ATTEMPTS_TRIALS = exports.TWO_FA_EXPIRESIN = exports.OTP_BLOCK_TIME = exports.OTP_MAX_TRIALS = exports.OTP_EXPIRES_IN = exports.APP_PASSWORD = exports.APP_EMAIL = exports.WEB_CLIENT_IDs = exports.REFRESH_TOKEN_EXPIRES_IN = exports.REFRESH_ADMIN_TOKEN_SIGNATURE = exports.REFRESH_USER_TOKEN_SIGNATURE = exports.ACCESS_TOKEN_EXPIRES_IN = exports.ACCESS_ADMIN_TOKEN_SIGNATURE = exports.ACCESS_USER_TOKEN_SIGNATURE = exports.IV_LENGTH = exports.ENC_KEY = exports.REDIS_URI = exports.DB_URI = exports.APP_NAME = exports.PORT = exports.NODE_ENV = void 0;
+exports.AWS_S3_BUCKET_NAME = exports.AWS_S3_REGION = exports.AWS_S3_ACCESS_SECRET_KEY = exports.AWS_S3_ACCESS_KEY_ID = exports.CORS_ORIGINS = exports.LOGIN_ATTEMPT_BLOCK_TIME = exports.MAX_LOGIN_ATTEMPTS_TRIALS = exports.TWO_FA_EXPIRESIN = exports.OTP_BLOCK_TIME = exports.OTP_MAX_TRIALS = exports.OTP_EXPIRES_IN = exports.APP_PASSWORD = exports.APP_EMAIL = exports.WEB_CLIENT_IDs = exports.REFRESH_TOKEN_EXPIRES_IN = exports.REFRESH_ADMIN_TOKEN_SIGNATURE = exports.REFRESH_USER_TOKEN_SIGNATURE = exports.ACCESS_TOKEN_EXPIRES_IN = exports.ACCESS_ADMIN_TOKEN_SIGNATURE = exports.ACCESS_USER_TOKEN_SIGNATURE = exports.IV_LENGTH = exports.ENC_KEY = exports.REDIS_URI = exports.DB_URI = exports.APP_NAME = exports.PORT = exports.NODE_ENV = void 0;
 const dotenv_1 = require("dotenv");
 const node_path_1 = require("node:path");
 exports.NODE_ENV = process.env.NODE_ENV ?? "development";
@@ -27,3 +27,7 @@ exports.TWO_FA_EXPIRESIN = parseInt(process.env.TWO_FA_EXPIRESIN ?? "120");
 exports.MAX_LOGIN_ATTEMPTS_TRIALS = parseInt(process.env.MAX_LOGIN_ATTEMPTS_TRIALS ?? "3");
 exports.LOGIN_ATTEMPT_BLOCK_TIME = parseInt(process.env.LOGIN_ATTEMPT_BLOCK_TIME ?? "300");
 exports.CORS_ORIGINS = (process.env.CORS_ORIGINS?.split(",") ?? "http://localhost:3000");
+exports.AWS_S3_ACCESS_KEY_ID = process.env.AWS_S3_ACCESS_KEY_ID;
+exports.AWS_S3_ACCESS_SECRET_KEY = process.env.AWS_S3_ACCESS_SECRET_KEY;
+exports.AWS_S3_REGION = process.env.AWS_S3_REGION;
+exports.AWS_S3_BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME;

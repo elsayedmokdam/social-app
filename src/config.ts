@@ -41,3 +41,9 @@ export const LOGIN_ATTEMPT_BLOCK_TIME: number = parseInt(process.env.LOGIN_ATTEM
 
 // Cors Options
 export const CORS_ORIGINS: string[] = (process.env.CORS_ORIGINS?.split(",") ?? "http://localhost:3000") as string[];
+
+// AWS Credentiaols
+export const AWS_S3_ACCESS_KEY_ID: string = process.env.AWS_S3_ACCESS_KEY_ID as string;
+export const AWS_S3_ACCESS_SECRET_KEY: string = process.env.AWS_S3_ACCESS_SECRET_KEY as string;
+export const AWS_S3_REGION: string = process.env.AWS_S3_REGION as string;
+export const AWS_S3_BUCKET_NAME: string = process.env.AWS_S3_BUCKET_NAME as string;

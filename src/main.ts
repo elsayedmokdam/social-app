@@ -4,7 +4,12 @@ dns.setServers(["8.8.8.8", "1.1.1.1"]);
 // ------------------------------------------
 import express from "express";
 import cors from "cors";
-import { authenticationController, userController } from "./modules";
+import {
+  authenticationController,
+  commentController,
+  postController,
+  userController,
+} from "./modules";
 import { globalErrorHandler } from "./middleware";
 import { PORT } from "./config";
 import { initializeDB } from "./DB/connection.db";
@@ -65,6 +70,11 @@ app.get(
 app.use("/auth", authenticationController);
 // User Routes
 app.use("/user", userController);
+// Post Routes
+app.use("/post", postController);
+app.use("/posts", postController);
+// Comment Routes
+app.use("/", commentController);
 
 // Handle Invalid Routes
 app.all("{/*dummy}", (req, res) => {

@@ -42,7 +42,7 @@ class DBRepository {
             .find(filter)
             .select(projection ?? {})
             .skip(skip)
-            .limit(page);
+            .limit(limit);
         if (sort)
             query = query.sort(sort);
         if (populate)

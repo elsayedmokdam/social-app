@@ -18,3 +18,5 @@ __exportStar(require("./eror.interface"), exports);
 __exportStar(require("./response.interface"), exports);
 __exportStar(require("./user.interface"), exports);
 __exportStar(require("./repository.interface"), exports);
+__exportStar(require("./post.interface"), exports);
+__exportStar(require("./comment.interface"), exports);

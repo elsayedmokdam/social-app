@@ -11,6 +11,7 @@ const validationMiddleware = (schema) => {
         const validationResult = schema(lang).safeParse({
             body: req.body,
             headers: req.headers,
+            files: req.files,
             query: req.query,
             params: req.params,
         });

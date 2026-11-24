@@ -204,7 +204,7 @@ export abstract class DBRepository<TRawDocType> {
       .find(filter)
       .select(projection ?? {})
       .skip(skip)
-      .limit(page);
+      .limit(limit);
 
     if (sort) query = query.sort(sort);
 

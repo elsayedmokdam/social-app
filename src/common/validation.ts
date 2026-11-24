@@ -1,6 +1,7 @@
 import { z } from "zod";
 import mongoose from "mongoose";
 import { LanguageEnum } from "./enum";
+import { fileValidations } from "./utils/multer";
 
 const matchFields = ({
   data,
@@ -27,7 +28,7 @@ const matchFields = ({
   }
 };
 
-// const allowedExtentionsFiles = Object.values(fileValidations).flat();
+const allowedExtentionsFiles = Object.values(fileValidations).flat();
 
 export const generalValidationFields = {
   username: (lang: LanguageEnum) =>
@@ -105,18 +106,18 @@ export const generalValidationFields = {
       },
     ),
 
-  // file: (lang: LanguageEnum) =>
-  //   z.strictObject({
-  //     fieldname: z.string(),
-  //     originalname: z.string(),
-  //     encoding: z.string(),
-  //     mimetype: z.enum(allowedExtentionsFiles, {
-  //       message: lang === LanguageEnum.AR ? "ملف غير صالح" : "Invalid file",
-  //     }),
-  //     buffer: z.instanceof(Buffer),
-  //     size: z.number(),
-  //     path: z.string(),
-  //   }),
+  file: (lang: LanguageEnum) =>
+    z.strictObject({
+      fieldname: z.string(),
+      originalname: z.string(),
+      encoding: z.string(),
+      mimetype: z.enum(allowedExtentionsFiles, {
+        message: lang === LanguageEnum.AR ? "ملف غير صالح" : "Invalid file",
+      }),
+      buffer: z.instanceof(Buffer),
+      size: z.number(),
+      key: z.string(),
+    }),
 
   header: (lang: LanguageEnum) =>
     z.object({

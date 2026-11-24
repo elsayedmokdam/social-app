@@ -31,6 +31,9 @@ app.get("/uploads/*path", async (req, res) => {
 });
 app.use("/auth", modules_1.authenticationController);
 app.use("/user", modules_1.userController);
+app.use("/post", modules_1.postController);
+app.use("/posts", modules_1.postController);
+app.use("/", modules_1.commentController);
 app.all("{/*dummy}", (req, res) => {
     res.status(404).json({ message: "Invalid Application Route" });
 });

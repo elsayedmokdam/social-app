@@ -7,6 +7,7 @@ exports.generalValidationFields = void 0;
 const zod_1 = require("zod");
 const mongoose_1 = __importDefault(require("mongoose"));
 const enum_1 = require("./enum");
+const multer_1 = require("./utils/multer");
 const matchFields = ({ data, field, match, ctx, lang, }) => {
     if (data[field] !== data[match]) {
         ctx.addIssue({
@@ -18,6 +19,7 @@ const matchFields = ({ data, field, match, ctx, lang, }) => {
         });
     }
 };
+const allowedExtentionsFiles = Object.values(multer_1.fileValidations).flat();
 exports.generalValidationFields = {
     username: (lang) => zod_1.z
         .string()
@@ -67,6 +69,17 @@ exports.generalValidationFields = {
         return mongoose_1.default.Types.ObjectId.isValid(data);
     }, {
         message: lang == enum_1.LanguageEnum.AR ? "id غير صالح" : "Invalid id format",
+    }),
+    file: (lang) => zod_1.z.strictObject({
+        fieldname: zod_1.z.string(),
+        originalname: zod_1.z.string(),
+        encoding: zod_1.z.string(),
+        mimetype: zod_1.z.enum(allowedExtentionsFiles, {
+            message: lang === enum_1.LanguageEnum.AR ? "ملف غير صالح" : "Invalid file",
+        }),
+        buffer: zod_1.z.instanceof(Buffer),
+        size: zod_1.z.number(),
+        key: zod_1.z.string(),
     }),
     header: (lang) => zod_1.z.object({
         "accept-language": zod_1.z

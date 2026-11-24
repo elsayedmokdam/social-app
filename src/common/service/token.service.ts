@@ -31,7 +31,7 @@ export class TokenService {
 
   constructor() {
     this.userRepository = new UserRepository();
-    this.cacheService =cacheService;
+    this.cacheService = cacheService;
   }
 
   async generateToken({
@@ -54,7 +54,7 @@ export class TokenService {
     secret: string;
   }): Promise<JwtPayloadType> {
     try {
-      return jwt.verify(token, secret) as JwtPayload;
+      return jwt.verify(token, secret) as unknown as JwtPayloadType;
     } catch (error: any) {
       if (error.name === "TokenExpiredError") {
         throw new UnauthorizedException("Session Expired, Please Login Again");

@@ -98,7 +98,7 @@ export class TokenService {
     payload: JwtPayloadType;
     user: HUser;
   }> {
-    const decoded = jwt.decode(authorization) as JwtPayloadType;
+    const decoded = jwt.decode(authorization) as unknown as JwtPayloadType;
     if (!decoded?.aud?.length) {
       throw new BadRequestException("Missing Token Payload");
     }
